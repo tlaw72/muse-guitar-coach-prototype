@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A simulated prototype for a multimodal Muse guitar coach.">
+  <title>Muse Guitar Coach — Concept Prototype</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f6f3eb;
+      --muted: #aaa79f;
+      --panel: rgba(27, 29, 31, 0.88);
+      --panel-2: #222528;
+      --line: rgba(255, 255, 255, 0.11);
+      --accent: #a8f06a;
+      --accent-dark: #14220d;
+      --orange: #ffb35c;
+      --blue: #7cc9ff;
+      --red: #ff8178;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(168, 240, 106, 0.16), transparent 26rem),
+        radial-gradient(circle at 88% 90%, rgba(124, 201, 255, 0.12), transparent 28rem),
+        #111315;
+    }
+
+    button, input { font: inherit; }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 4px 0 22px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      color: #10150d;
+      background: var(--accent);
+      font-weight: 900;
+      box-shadow: 0 10px 30px rgba(168, 240, 106, 0.22);
+    }
+    .brand strong { display: block; font-size: 17px; }
+    .brand span { color: var(--muted); font-size: 13px; }
+
+    .prototype-label {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-copy, .upload-card, .workspace {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-copy { padding: clamp(28px, 5vw, 54px); }
+    .eyebrow { margin: 0 0 12px; color: var(--accent); font-weight: 750; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 720px; font-size: clamp(38px, 6vw, 72px); line-height: 0.96; letter-spacing: -0.055em; }
+    .hero-copy > p:last-of-type { max-width: 650px; margin: 24px 0 0; color: #cbc8c0; font-size: 17px; line-height: 1.65; }
+
+    .upload-card { padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+    .upload-card h2 { margin: 0 0 8px; font-size: 21px; }
+    .upload-card p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .dropzone {
+      display: grid;
+      place-items: center;
+      min-height: 190px;
+      margin: 22px 0;
+      padding: 20px;
+      border: 1px dashed rgba(168, 240, 106, 0.48);
+      border-radius: 18px;
+      text-align: center;
+      background: linear-gradient(145deg, rgba(168, 240, 106, 0.08), transparent);
+    }
+    .dropzone-icon { font-size: 38px; margin-bottom: 8px; }
+    .fine-print { font-size: 12px; color: var(--muted); }
+
+    .primary, .tab {
+      cursor: pointer;
+      border: 0;
+      border-radius: 12px;
+      transition: transform 150ms ease, background 150ms ease;
+    }
+    .primary { width: 100%; padding: 13px 16px; color: #10150d; background: var(--accent); font-weight: 800; }
+    .primary:hover { transform: translateY(-1px); background: #b8fa80; }
+
+    .workspace { display: none; overflow: hidden; }
+    .workspace.visible { display: block; animation: reveal 300ms ease both; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(8px); } }
+
+    .workspace-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--line);
+    }
+    .session-title strong { display: block; }
+    .session-title span { color: var(--muted); font-size: 13px; }
+    .tabs { display: flex; gap: 6px; padding: 5px; border-radius: 14px; background: #141618; }
+    .tab { padding: 9px 13px; color: var(--muted); background: transparent; }
+    .tab.active { color: var(--ink); background: var(--panel-2); }
+
+    .view { display: none; padding: 22px; }
+    .view.active { display: block; }
+    .review-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr); gap: 18px; }
+
+    .video-panel {
+      position: relative;
+      min-height: 430px;
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(to top, rgba(8, 10, 11, 0.82), transparent 52%),
+        radial-gradient(circle at 55% 45%, #52614a, #1b231f 42%, #0d1011 72%);
+    }
+    .video-panel::before {
+      content: "";
+      position: absolute;
+      left: 50%; top: 48%;
+      width: 210px; height: 110px;
+      border: 16px solid rgba(246, 243, 235, 0.68);
+      border-left-width: 34px;
+      border-radius: 48% 24% 44% 46%;
+      transform: translate(-50%, -50%) rotate(-12deg);
+      box-shadow: inset 0 0 0 3px rgba(17, 19, 21, 0.6), 0 20px 50px rgba(0, 0, 0, 0.38);
+    }
+    .video-panel::after {
+      content: "";
+      position: absolute;
+      left: 61%; top: 38%;
+      width: 160px; height: 22px;
+      border-radius: 8px;
+      transform: rotate(-17deg);
+      background: rgba(246, 243, 235, 0.62);
+    }
+    .timestamp-badge { position: absolute; top: 16px; left: 16px; z-index: 2; padding: 8px 10px; border-radius: 10px; background: rgba(0,0,0,.55); font-variant-numeric: tabular-nums; }
+    .caption { position: absolute; z-index: 2; left: 18px; right: 18px; bottom: 18px; }
+    .caption strong { display: block; margin-bottom: 4px; font-size: 18px; }
+    .caption span { color: #d4d1ca; }
+
+    .timeline { margin-top: 14px; padding: 12px 6px 2px; }
+    .rail { position: relative; height: 5px; border-radius: 99px; background: #363a3c; }
+    .rail::before { content: ""; position: absolute; width: 47%; height: 100%; border-radius: inherit; background: var(--accent); }
+    .marker { position: absolute; top: 50%; width: 13px; height: 13px; border: 3px solid #141618; border-radius: 50%; transform: translate(-50%, -50%); background: var(--orange); }
+    .marker.red { background: var(--red); }
+    .time-labels { display: flex; justify-content: space-between; margin-top: 8px; color: var(--muted); font-size: 11px; }
+
+    .feedback { display: grid; gap: 12px; align-content: start; }
+    .coach-summary { padding: 18px; border-radius: 16px; color: #dfffc6; background: var(--accent-dark); border: 1px solid rgba(168, 240, 106, 0.24); line-height: 1.5; }
+    .feedback-card { display: grid; grid-template-columns: auto 1fr; gap: 13px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel-2); }
+    .time-pill { height: fit-content; padding: 6px 8px; border-radius: 9px; color: #111315; background: var(--orange); font-size: 12px; font-weight: 850; }
+    .feedback-card:nth-of-type(3) .time-pill { background: var(--red); }
+    .feedback-card:nth-of-type(4) .time-pill { background: var(--blue); }
+    .feedback-card h3 { margin: 0 0 6px; font-size: 15px; }
+    .feedback-card p { margin: 0 0 8px; color: #c2bfb7; font-size: 13px; line-height: 1.5; }
+    .feedback-card small { color: var(--accent); }
+
+    .score-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+    .score, .drill { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel-2); }
+    .score strong { display: block; font-size: 28px; }
+    .score span { color: var(--muted); font-size: 12px; }
+    .plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .drill .number { color: var(--accent); font-weight: 850; }
+    .drill h3 { margin: 28px 0 8px; }
+    .drill p { color: #c5c2ba; line-height: 1.55; }
+    .duration { color: var(--muted); font-size: 12px; }
+
+    footer { margin-top: 16px; color: var(--muted); text-align: center; font-size: 12px; }
+
+    @media (max-width: 850px) {
+      .hero, .review-grid { grid-template-columns: 1fr; }
+      .score-grid, .plan-grid { grid-template-columns: repeat(2, 1fr); }
+      .workspace-head { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 540px) {
+      .shell { width: min(100% - 18px, 1180px); padding-top: 12px; }
+      .prototype-label { display: none; }
+      .score-grid, .plan-grid { grid-template-columns: 1fr; }
+      .view { padding: 12px; }
+      .video-panel { min-height: 340px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">M</div>
+        <div><strong>Muse Guitar Coach</strong><span>Listen. Watch. Improve.</span></div>
+      </div>
+      <div class="prototype-label">Simulated concept prototype</div>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <article class="hero-copy">
+        <p class="eyebrow">A teacher for every practice session</p>
+        <h1 id="hero-title">Turn practice video into your next breakthrough.</h1>
+        <p>Muse listens to what you play, watches how you play it, and remembers what you are working toward. Get feedback tied to exact moments—not a generic summary.</p>
+      </article>
+
+      <aside class="upload-card">
+        <div>
+          <h2>Analyze a practice session</h2>
+          <p>Video and audio stay synchronized so Muse can connect sound, timing, and technique.</p>
+        </div>
+        <div class="dropzone" aria-label="Simulated file upload area">
+          <div>
+            <div class="dropzone-icon" aria-hidden="true">♬</div>
+            <strong>Drop a 10–30 minute video</strong>
+            <div class="fine-print">MP4, MOV or direct recording</div>
+          </div>
+        </div>
+        <button class="primary" id="load-demo" type="button">Load sample session</button>
+        <p class="fine-print" style="margin-top:10px">Prototype only—no media is uploaded.</p>
+      </aside>
+    </section>
+
+    <section class="workspace" id="workspace" aria-live="polite">
+      <div class="workspace-head">
+        <div class="session-title">
+          <strong>Hotel California — opening solo</strong>
+          <span>Today · 1:32 · Goal: clean at 80 BPM</span>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Session views">
+          <button class="tab active" role="tab" aria-selected="true" data-view="review">Review</button>
+          <button class="tab" role="tab" aria-selected="false" data-view="plan">Practice plan</button>
+        </div>
+      </div>
+
+      <div class="view active" id="review" role="tabpanel">
+        <div class="review-grid">
+          <div>
+            <div class="video-panel" aria-label="Stylized placeholder for guitar practice video">
+              <div class="timestamp-badge">00:41 / 01:32</div>
+              <div class="caption"><strong>Position shift lands early</strong><span>Keep the picking hand moving while the fretting hand shifts.</span></div>
+            </div>
+            <div class="timeline" aria-label="Feedback timeline">
+              <div class="rail">
+                <span class="marker" style="left:20%" title="Pitch issue at 0:18"></span>
+                <span class="marker red" style="left:45%" title="Timing issue at 0:41"></span>
+                <span class="marker" style="left:70%" title="Technique issue at 1:04"></span>
+              </div>
+              <div class="time-labels"><span>0:00</span><span>0:30</span><span>1:00</span><span>1:32</span></div>
+            </div>
+          </div>
+
+          <div class="feedback">
+            <div class="coach-summary"><strong>Coach's take:</strong> Your phrasing is recognizable. Prioritize the bend at 0:18 and the rushed transition at 0:41.</div>
+            <article class="feedback-card">
+              <span class="time-pill">0:18</span>
+              <div><h3>Bend stops below the target</h3><p>The audio lands about a quarter-tone flat, and the video shows the bend travel stopping early.</p><small>Try: match a pre-bend to the fretted target note.</small></div>
+            </article>
+            <article class="feedback-card">
+              <span class="time-pill">0:41</span>
+              <div><h3>Transition rushes the beat</h3><p>The position shift arrives roughly 90 ms early and compresses the next two notes.</p><small>Try: loop beats 2–4 at 65 BPM.</small></div>
+            </article>
+            <article class="feedback-card">
+              <span class="time-pill">1:04</span>
+              <div><h3>Wrist tension during the reach</h3><p>Your wrist bends inward while the thumb rises over the neck.</p><small>Try: center the thumb and raise the neck slightly.</small></div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="view" id="plan" role="tabpanel">
+        <div class="score-grid" aria-label="Session scores">
+          <div class="score"><strong>78</strong><span>Timing</span></div>
+          <div class="score"><strong>84</strong><span>Pitch accuracy</span></div>
+          <div class="score"><strong>72</strong><span>Technique</span></div>
+          <div class="score"><strong>88</strong><span>Posture</span></div>
+        </div>
+        <div class="plan-grid">
+          <article class="drill"><span class="number">01</span><h3>Bend calibration</h3><p>Alternate the target fretted note with a silent pre-bend. Complete five clean repetitions per set.</p><span class="duration">4 minutes</span></article>
+          <article class="drill"><span class="number">02</span><h3>Position-shift loop</h3><p>Loop 0:37–0:45 at 65 BPM. Increase by 3 BPM after three clean repetitions.</p><span class="duration">5 minutes</span></article>
+          <article class="drill"><span class="number">03</span><h3>Relaxed reach</h3><p>Practice the reach without picking while keeping the wrist neutral and thumb centered.</p><span class="duration">3 minutes</span></article>
+        </div>
+      </div>
+    </section>
+
+    <footer>Concept for Muse product feedback · Simulated analysis · No recording is stored</footer>
+  </main>
+
+  <script>
+    const workspace = document.querySelector('#workspace');
+    document.querySelector('#load-demo').addEventListener('click', () => {
+      workspace.classList.add('visible');
+      workspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    document.querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach((item) => {
+          item.classList.toggle('active', item === tab);
+          item.setAttribute('aria-selected', item === tab ? 'true' : 'false');
+        });
+        document.querySelectorAll('.view').forEach((view) => {
+          view.classList.toggle('active', view.id === tab.dataset.view);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{
+  "session": {
+    "title": "Hotel California solo practice",
+    "duration_seconds": 92,
+    "goal": "Play the opening phrase cleanly at 80 BPM",
+    "tempo_bpm": 80
+  },
+  "summary": {
+    "timing": 78,
+    "pitch_accuracy": 84,
+    "technique": 72,
+    "posture": 88,
+    "headline": "Your phrasing is recognizable. Prioritize the bend at 0:18 and the rushed transition at 0:41."
+  },
+  "events": [
+    {
+      "timestamp_seconds": 18,
+      "category": "pitch",
+      "severity": "high",
+      "observation": "The whole-step bend stops about a quarter-tone flat.",
+      "evidence": "Audio pitch contour and visible bend travel agree.",
+      "action": "Pre-bend to the target note, check it against the fretted pitch, then release slowly."
+    },
+    {
+      "timestamp_seconds": 41,
+      "category": "timing",
+      "severity": "high",
+      "observation": "The position shift lands roughly 90 ms early and compresses the next two notes.",
+      "evidence": "Onset timing moves ahead of the 80 BPM grid during the shift.",
+      "action": "Loop beats 2–4 at 65 BPM and keep the picking hand moving through the shift."
+    },
+    {
+      "timestamp_seconds": 64,
+      "category": "technique",
+      "severity": "medium",
+      "observation": "The fretting wrist bends inward during the reach, adding tension.",
+      "evidence": "Wrist angle increases while the thumb rises over the neck.",
+      "action": "Move the thumb toward the center of the neck and bring the guitar neck slightly higher."
+    }
+  ],
+  "practice_plan": [
+    {
+      "minutes": 4,
+      "title": "Bend calibration",
+      "instructions": "Alternate the target fretted note with a silent pre-bend, five clean repetitions per set."
+    },
+    {
+      "minutes": 5,
+      "title": "Position-shift loop",
+      "instructions": "Loop 0:37–0:45 at 65 BPM. Increase by 3 BPM after three clean repetitions."
+    },
+    {
+      "minutes": 3,
+      "title": "Relaxed reach",
+      "instructions": "Practice the reach without picking while keeping the wrist neutral and thumb centered."
+    }
+  ]
+}
