@@ -2,6 +2,8 @@
 
 A lightweight interaction prototype for a persistent, multimodal guitar teacher powered by Muse.
 
+**[Open the live prototype](https://tlaw72.github.io/muse-guitar-coach-prototype/)**
+
 **This is a concept prototype.** It uses simulated feedback and does not upload media or call a model API.
 
 ## Product idea
