@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A simulated prototype for a multimodal Muse guitar coach.">
-  <title>Muse Guitar Coach — Concept Prototype</title>
+  <meta name="description" content="A simulated prototype for a real-time multimodal Muse guitar coach.">
+  <title>Muse Live Guitar Coach — Concept Prototype</title>
   <style>
     :root {
       color-scheme: dark;
@@ -82,7 +82,7 @@
       margin-bottom: 18px;
     }
 
-    .hero-copy, .upload-card, .workspace {
+    .hero-copy, .live-card, .workspace {
       border: 1px solid var(--line);
       border-radius: 24px;
       background: var(--panel);
@@ -95,9 +95,9 @@
     h1 { margin: 0; max-width: 720px; font-size: clamp(38px, 6vw, 72px); line-height: 0.96; letter-spacing: -0.055em; }
     .hero-copy > p:last-of-type { max-width: 650px; margin: 24px 0 0; color: #cbc8c0; font-size: 17px; line-height: 1.65; }
 
-    .upload-card { padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
-    .upload-card h2 { margin: 0 0 8px; font-size: 21px; }
-    .upload-card p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .live-card { padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+    .live-card h2 { margin: 0 0 8px; font-size: 21px; }
+    .live-card p { margin: 0; color: var(--muted); line-height: 1.5; }
     .dropzone {
       display: grid;
       place-items: center;
@@ -111,6 +111,11 @@
     }
     .dropzone-icon { font-size: 38px; margin-bottom: 8px; }
     .fine-print { font-size: 12px; color: var(--muted); }
+
+    .device-status { display: grid; gap: 10px; width: 100%; }
+    .device-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 13px; border-radius: 12px; background: rgba(0, 0, 0, 0.24); }
+    .ready { display: inline-flex; align-items: center; gap: 7px; color: var(--accent); font-size: 12px; font-weight: 800; }
+    .ready::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px rgba(168, 240, 106, 0.1); }
 
     .primary, .tab {
       cursor: pointer;
@@ -174,6 +179,9 @@
       background: rgba(246, 243, 235, 0.62);
     }
     .timestamp-badge { position: absolute; top: 16px; left: 16px; z-index: 2; padding: 8px 10px; border-radius: 10px; background: rgba(0,0,0,.55); font-variant-numeric: tabular-nums; }
+    .live-badge { position: absolute; top: 16px; right: 16px; z-index: 2; display: flex; align-items: center; gap: 7px; padding: 8px 10px; border-radius: 10px; color: #fff; background: rgba(204, 34, 45, 0.82); font-size: 12px; font-weight: 850; letter-spacing: 0.06em; }
+    .live-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: pulse 1.2s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: 0.3; transform: scale(0.75); } }
     .caption { position: absolute; z-index: 2; left: 18px; right: 18px; bottom: 18px; }
     .caption strong { display: block; margin-bottom: 4px; font-size: 18px; }
     .caption span { color: #d4d1ca; }
@@ -226,53 +234,55 @@
     <header>
       <div class="brand">
         <div class="brand-mark" aria-hidden="true">M</div>
-        <div><strong>Muse Guitar Coach</strong><span>Listen. Watch. Improve.</span></div>
+        <div><strong>Muse Live Guitar Coach</strong><span>Listen. Watch. Coach in the moment.</span></div>
       </div>
       <div class="prototype-label">Simulated concept prototype</div>
     </header>
 
     <section class="hero" aria-labelledby="hero-title">
       <article class="hero-copy">
-        <p class="eyebrow">A teacher for every practice session</p>
-        <h1 id="hero-title">Turn practice video into your next breakthrough.</h1>
-        <p>Muse listens to what you play, watches how you play it, and remembers what you are working toward. Get feedback tied to exact moments—not a generic summary.</p>
+        <p class="eyebrow">A teacher who practices with you</p>
+        <h1 id="hero-title">Get useful coaching while you play.</h1>
+        <p>Start a live lesson. Muse listens to your sound, watches your technique, and gives concise cues at the right moment—then remembers what to work on next time.</p>
       </article>
 
-      <aside class="upload-card">
+      <aside class="live-card">
         <div>
-          <h2>Analyze a practice session</h2>
-          <p>Video and audio stay synchronized so Muse can connect sound, timing, and technique.</p>
+          <h2>Start a live lesson</h2>
+          <p>Camera and microphone stay synchronized so Muse can connect sound, timing, and technique as they happen.</p>
         </div>
-        <div class="dropzone" aria-label="Simulated file upload area">
-          <div>
+        <div class="dropzone" aria-label="Simulated live camera and microphone readiness">
+          <div class="device-status">
             <div class="dropzone-icon" aria-hidden="true">♬</div>
-            <strong>Drop a 10–30 minute video</strong>
-            <div class="fine-print">MP4, MOV or direct recording</div>
+            <div class="device-row"><strong>Camera</strong><span class="ready">Ready</span></div>
+            <div class="device-row"><strong>Microphone</strong><span class="ready">Ready</span></div>
+            <div class="fine-print">Live coaching · rolling 90-second replay buffer</div>
           </div>
         </div>
-        <button class="primary" id="load-demo" type="button">Load sample session</button>
-        <p class="fine-print" style="margin-top:10px">Prototype only—no media is uploaded.</p>
+        <button class="primary" id="start-live" type="button">Start simulated live lesson</button>
+        <p class="fine-print" style="margin-top:10px">Prototype only—camera and microphone are not accessed.</p>
       </aside>
     </section>
 
     <section class="workspace" id="workspace" aria-live="polite">
       <div class="workspace-head">
         <div class="session-title">
-          <strong>Hotel California — opening solo</strong>
-          <span>Today · 1:32 · Goal: clean at 80 BPM</span>
+          <strong>Live lesson · Hotel California opening solo</strong>
+          <span><span id="session-time">0:00</span> elapsed · Goal: clean at 80 BPM</span>
         </div>
         <div class="tabs" role="tablist" aria-label="Session views">
-          <button class="tab active" role="tab" aria-selected="true" data-view="review">Review</button>
-          <button class="tab" role="tab" aria-selected="false" data-view="plan">Practice plan</button>
+          <button class="tab active" role="tab" aria-selected="true" data-view="review">Live coaching</button>
+          <button class="tab" role="tab" aria-selected="false" data-view="plan">Lesson plan</button>
         </div>
       </div>
 
       <div class="view active" id="review" role="tabpanel">
         <div class="review-grid">
           <div>
-            <div class="video-panel" aria-label="Stylized placeholder for guitar practice video">
-              <div class="timestamp-badge">00:41 / 01:32</div>
-              <div class="caption"><strong>Position shift lands early</strong><span>Keep the picking hand moving while the fretting hand shifts.</span></div>
+            <div class="video-panel" aria-label="Stylized placeholder for a live guitar lesson">
+              <div class="timestamp-badge" id="video-time">00:00</div>
+              <div class="live-badge">LIVE</div>
+              <div class="caption"><strong>Slow down that position shift</strong><span>Keep the picking hand moving while the fretting hand shifts.</span></div>
             </div>
             <div class="timeline" aria-label="Feedback timeline">
               <div class="rail">
@@ -280,23 +290,23 @@
                 <span class="marker red" style="left:45%" title="Timing issue at 0:41"></span>
                 <span class="marker" style="left:70%" title="Technique issue at 1:04"></span>
               </div>
-              <div class="time-labels"><span>0:00</span><span>0:30</span><span>1:00</span><span>1:32</span></div>
+              <div class="time-labels"><span>−1:30</span><span>−1:00</span><span>−0:30</span><span>Now</span></div>
             </div>
           </div>
 
           <div class="feedback">
-            <div class="coach-summary"><strong>Coach's take:</strong> Your phrasing is recognizable. Prioritize the bend at 0:18 and the rushed transition at 0:41.</div>
+            <div class="coach-summary"><strong>Live cue:</strong> Finish the phrase, then repeat the position shift once at a slower tempo.</div>
             <article class="feedback-card">
-              <span class="time-pill">0:18</span>
+              <span class="time-pill">46s ago</span>
               <div><h3>Bend stops below the target</h3><p>The audio lands about a quarter-tone flat, and the video shows the bend travel stopping early.</p><small>Try: match a pre-bend to the fretted target note.</small></div>
             </article>
             <article class="feedback-card">
-              <span class="time-pill">0:41</span>
+              <span class="time-pill">22s ago</span>
               <div><h3>Transition rushes the beat</h3><p>The position shift arrives roughly 90 ms early and compresses the next two notes.</p><small>Try: loop beats 2–4 at 65 BPM.</small></div>
             </article>
             <article class="feedback-card">
-              <span class="time-pill">1:04</span>
-              <div><h3>Wrist tension during the reach</h3><p>Your wrist bends inward while the thumb rises over the neck.</p><small>Try: center the thumb and raise the neck slightly.</small></div>
+              <span class="time-pill">Now</span>
+              <div><h3>Listening until the phrase ends</h3><p>Muse waits for a musically natural pause instead of speaking over your playing.</p><small>Next cue: center the thumb and raise the neck slightly.</small></div>
             </article>
           </div>
         </div>
@@ -317,14 +327,33 @@
       </div>
     </section>
 
-    <footer>Concept for Muse product feedback · Simulated analysis · No recording is stored</footer>
+    <footer>Concept for Muse product feedback · Simulated live coaching · No camera or microphone access</footer>
   </main>
 
   <script>
     const workspace = document.querySelector('#workspace');
-    document.querySelector('#load-demo').addEventListener('click', () => {
+    const startButton = document.querySelector('#start-live');
+    const sessionTime = document.querySelector('#session-time');
+    const videoTime = document.querySelector('#video-time');
+    let timer;
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      return `${minutes}:${String(seconds % 60).padStart(2, '0')}`;
+    }
+
+    startButton.addEventListener('click', () => {
       workspace.classList.add('visible');
       workspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      startButton.textContent = 'Lesson in progress';
+      startButton.disabled = true;
+      let elapsed = 0;
+      clearInterval(timer);
+      timer = setInterval(() => {
+        elapsed += 1;
+        sessionTime.textContent = formatTime(elapsed);
+        videoTime.textContent = formatTime(elapsed);
+      }, 1000);
     });
 
     document.querySelectorAll('.tab').forEach((tab) => {

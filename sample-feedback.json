@@ -1,9 +1,12 @@
 {
   "session": {
+    "mode": "live",
     "title": "Hotel California solo practice",
-    "duration_seconds": 92,
+    "elapsed_seconds": 92,
     "goal": "Play the opening phrase cleanly at 80 BPM",
-    "tempo_bpm": 80
+    "tempo_bpm": 80,
+    "target_feedback_latency_ms": 2000,
+    "rolling_buffer_seconds": 90
   },
   "summary": {
     "timing": 78,
@@ -15,6 +18,7 @@
   "events": [
     {
       "timestamp_seconds": 18,
+      "delivered_live": true,
       "category": "pitch",
       "severity": "high",
       "observation": "The whole-step bend stops about a quarter-tone flat.",
@@ -23,6 +27,7 @@
     },
     {
       "timestamp_seconds": 41,
+      "delivered_live": true,
       "category": "timing",
       "severity": "high",
       "observation": "The position shift lands roughly 90 ms early and compresses the next two notes.",
@@ -31,6 +36,7 @@
     },
     {
       "timestamp_seconds": 64,
+      "delivered_live": false,
       "category": "technique",
       "severity": "medium",
       "observation": "The fretting wrist bends inward during the reach, adding tension.",
